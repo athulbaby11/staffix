@@ -1,0 +1,104 @@
+{% load static %}
+{% include 'header.html' %}
+<main>
+    <section class="job-table-section container">
+        <div class="job-table-heading">
+            <div>
+                <p class="eyebrow">Admin workspace</p>
+                <h1>Registered Jobs</h1>
+                <p class="register-job-intro">Review, update or remove your active job listings from one place.</p>
+            </div>
+            <div class="job-table-heading-actions">
+                <a class="button" href="{% url 'register_job' %}"><i class="bi bi-plus-lg"></i> Register a job</a>
+                <a class="text-link register-job-list-link" href="{% url 'view_applications' %}"><i class="bi bi-people"></i> View applications</a>
+                <a class="text-link register-job-list-link" href="{% url 'admin_dashboard' %}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            </div>
+        </div>
+        <div id="job-table-success" class="form-success" role="status" hidden>
+            <i class="bi bi-check-circle-fill"></i>
+            <span id="job-table-success-text">Done!</span>
+        </div>
+        <div class="job-table-wrap">
+            <table class="job-table">
+                <thead>
+                    <tr>
+                        <th>Company Name</th>
+                        <th>Job Title</th>
+                        <th>Location</th>
+                        <th>Salary/hour</th>
+                        <th>Job Type</th>
+                        <th>Employment Type</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr data-job-id="{{ job.id }}">
+                        <td>{{ job.company_name }}</td>
+                        <td>{{ job.job_title }}</td>
+                        <td>{{ job.location }}</td>
+                        <td>£{{ job.salary }}</td>
+                        <td>{{ job.get_job_type_display }}</td>
+                        <td>{{ job.get_employment_type_display }}</td>
+                        <td>{{ job.job_description }}</td>
+                        <td class="job-table-actions">
+                            <a class="table-btn table-btn-update" href="{% url 'edit_job' job.id %}"><i class="bi bi-pencil-square"></i> Update</a>
+                            <button type="button" class="table-btn table-btn-delete" data-delete-url="{% url 'delete_job' job.id %}"><i class="bi bi-trash3"></i> Delete</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="job-table-empty">No jobs registered yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<script>
+    (function () {
+        function getCsrfToken() {
+            var match = document.cookie.match(/csrftoken=([^;]+)/);
+            return match ? match[1] : '';
+        }
+
+        var successBanner = document.getElementById('job-table-success');
+        var successText = document.getElementById('job-table-success-text');
+
+        function showSuccess(message) {
+            successText.textContent = message;
+            successBanner.hidden = false;
+            successBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setTimeout(function () { successBanner.hidden = true; }, 5000);
+        }
+
+        document.querySelectorAll('.table-btn-delete').forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (!confirm('Are you sure you want to delete this job?')) { return; }
+
+                var row = button.closest('tr');
+                fetch(button.dataset.deleteUrl, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCsrfToken(),
+                    },
+                })
+                    .then(function (response) {
+                        if (!response.ok) { throw new Error('Request failed'); }
+                        return response.json();
+                    })
+                    .then(function () {
+                        row.remove();
+                        showSuccess('Job deleted successfully!');
+                    })
+                    .catch(function () {
+                        alert('Something went wrong while deleting the job. Please try again.');
+                    });
+            });
+        });
+    })();
+</script>
+{% include 'footer.html' %}

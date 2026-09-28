@@ -1,0 +1,174 @@
+{% load static %}
+{% include "header.html" %}
+<main>
+    <section class="dashboard container">
+        <div class="dashboard-heading">
+            <div>
+                <p class="eyebrow">Admin workspace</p>
+                <h1>Dashboard</h1>
+                <p class="register-job-intro">A quick snapshot of jobs, applications and onboarding activity.</p>
+            </div>
+            <div class="dashboard-heading-actions">
+                <a class="button" href="{% url 'register_job' %}"><i class="bi bi-plus-lg"></i> Register a job</a>
+                <a class="text-link register-job-list-link" href="{% url 'view_applications' %}"><i class="bi bi-people"></i> View applications</a>
+                <a class="text-link register-job-list-link" href="{% url 'our_employees' %}"><i class="bi bi-person-badge"></i> Our employees</a>
+            </div>
+        </div>
+
+        <div class="dashboard-stats">
+            <a class="dashboard-stat-card dashboard-stat-link" href="{% url 'register_view' %}">
+                <span class="dashboard-stat-icon dashboard-stat-icon-blue"><i class="bi bi-briefcase-fill"></i></span>
+                <div>
+                    <strong>{{ total_jobs }}</strong>
+                    <span>Total jobs</span>
+                </div>
+            </a>
+            <a class="dashboard-stat-card dashboard-stat-link" href="{% url 'view_applications' %}">
+                <span class="dashboard-stat-icon dashboard-stat-icon-purple"><i class="bi bi-file-earmark-person-fill"></i></span>
+                <div>
+                    <strong>{{ total_applications }}</strong>
+                    <span>Total applications</span>
+                </div>
+            </a>
+            <a class="dashboard-stat-card dashboard-stat-link" href="{% url 'view_applications' %}">
+                <span class="dashboard-stat-icon dashboard-stat-icon-amber"><i class="bi bi-hourglass-split"></i></span>
+                <div>
+                    <strong>{{ pending_count }}</strong>
+                    <span>Pending review</span>
+                </div>
+            </a>
+            <a class="dashboard-stat-card dashboard-stat-link" href="{% url 'onboard' %}">
+                <span class="dashboard-stat-icon dashboard-stat-icon-green"><i class="bi bi-person-check-fill"></i></span>
+                <div>
+                    <strong>{{ approved_count }}</strong>
+                    <span>Onboarded candidates</span>
+                </div>
+            </a>
+            <a class="dashboard-stat-card dashboard-stat-link" href="{% url 'our_employees' %}">
+                <span class="dashboard-stat-icon dashboard-stat-icon-teal"><i class="bi bi-person-badge-fill"></i></span>
+                <div>
+                    <strong>{{ total_employees }}</strong>
+                    <span>Our employees</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h2><i class="bi bi-pie-chart-fill"></i> Application approval rate</h2>
+                <div class="dashboard-donut-wrap">
+                    <div class="dashboard-donut" style="background: conic-gradient(var(--blue) 0% {{ approval_rate }}%, var(--line) {{ approval_rate }}% 100%);">
+                        <div class="dashboard-donut-center">
+                            <strong>{{ approval_rate }}%</strong>
+                            <span>Approved</span>
+                        </div>
+                    </div>
+                    <ul class="dashboard-legend">
+                        <li><span class="dashboard-legend-dot dashboard-legend-dot-blue"></span> Approved ({{ approved_count }})</li>
+                        <li><span class="dashboard-legend-dot dashboard-legend-dot-line"></span> Pending ({{ pending_count }})</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <h2><i class="bi bi-bar-chart-fill"></i> Jobs by type</h2>
+                <div class="dashboard-bars">
+                    <div class="dashboard-bar-row">
+                        <span class="dashboard-bar-label">Full time</span>
+                        <div class="dashboard-bar-track">
+                            <div class="dashboard-bar-fill dashboard-bar-fill-blue" style="width: {% if total_jobs %}{% widthratio full_time_count total_jobs 100 %}{% else %}0{% endif %}%;"></div>
+                        </div>
+                        <span class="dashboard-bar-value">{{ full_time_count }}</span>
+                    </div>
+                    <div class="dashboard-bar-row">
+                        <span class="dashboard-bar-label">Part time</span>
+                        <div class="dashboard-bar-track">
+                            <div class="dashboard-bar-fill dashboard-bar-fill-purple" style="width: {% if total_jobs %}{% widthratio part_time_count total_jobs 100 %}{% else %}0{% endif %}%;"></div>
+                        </div>
+                        <span class="dashboard-bar-value">{{ part_time_count }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-card dashboard-card-wide">
+                <h2><i class="bi bi-trophy-fill"></i> Most applied for jobs</h2>
+                {% if top_jobs %}
+                <ol class="dashboard-top-jobs">
+                    {% for job in top_jobs %}
+                    <li>
+                        <div>
+                            <strong>{{ job.job__job_title }}</strong>
+                            <span>{{ job.job__company_name }}</span>
+                        </div>
+                        <span class="dashboard-pill">{{ job.application_count }} application{{ job.application_count|pluralize }}</span>
+                    </li>
+                    {% endfor %}
+                </ol>
+                {% else %}
+                <p class="job-table-empty">No applications received yet.</p>
+                {% endif %}
+            </div>
+
+            <div class="dashboard-card dashboard-card-wide">
+                <h2><i class="bi bi-clock-history"></i> Recent applications</h2>
+                <div class="job-table-wrap dashboard-table-wrap">
+                    <table class="job-table">
+                        <thead>
+                            <tr>
+                                <th>Applicant</th>
+                                <th>Job</th>
+                                <th>Status</th>
+                                <th>Applied</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for application in recent_applications %}
+                            <tr>
+                                <td>{{ application.first_name }} {{ application.surname }}</td>
+                                <td>{{ application.job.job_title }}</td>
+                                <td><span class="application-status application-status-{{ application.status }}">{{ application.get_status_display }}</span></td>
+                                <td>{{ application.created_at|date:"d M Y" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="job-table-empty">No applications received yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="dashboard-card dashboard-card-wide">
+                <h2><i class="bi bi-building"></i> Recently registered jobs</h2>
+                <div class="job-table-wrap dashboard-table-wrap">
+                    <table class="job-table">
+                        <thead>
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Location</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in recent_jobs %}
+                            <tr>
+                                <td>{{ job.job_title }}</td>
+                                <td>{{ job.company_name }}</td>
+                                <td>{{ job.location }}</td>
+                                <td>{{ job.get_job_type_display }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="job-table-empty">No jobs registered yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% include "footer.html" %}

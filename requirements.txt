@@ -1,0 +1,6 @@
+Django==6.1.1
+python-dotenv==1.2.3
+
+# Used only by the local manual test scripts (test_apply.py, test_employee_flow.py,
+# debug_login2.py) — not required by the Django application itself.
+requests==2.34.2

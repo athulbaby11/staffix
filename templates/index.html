@@ -1,0 +1,164 @@
+
+ {% load static %}
+ {% include 'header.html' %}
+    <main>
+        <section class="hero container" id="home">
+            <span class="hero-orb hero-orb-one" aria-hidden="true"></span>
+            <span class="hero-orb hero-orb-two" aria-hidden="true"></span>
+            <div class="hero-content">
+                <p class="eyebrow">Staffing made simple</p>
+                <h1>The right people.<br><span>Right when you need them.</span></h1>
+                <p class="hero-text">Reliable and flexible workforce solutions that help people find the perfect job.</p>
+                <a class="button" href="{% url 'viewmore_job' %}">Find your workforce <i class="bi bi-arrow-up-right"></i></a>
+            </div>
+            <div class="hero-card">
+                <span class="hero-card-glow" aria-hidden="true"></span>
+                <span class="hero-card-badge"><i class="bi bi-stars"></i> Trusted by growing teams</span>
+                <i class="bi bi-people-fill"></i>
+                <strong>People find<br>better jobs.</strong>
+                <span>Trusted support to help you find the right opportunity.</span>
+                <div class="hero-stats"><span><b>12+</b> roles open</span><span><b>24h</b> response time</span></div>
+            </div>
+        </section>
+
+        <section class="impact-strip container">
+            <div class="impact-item">
+                <i class="bi bi-briefcase-fill"></i>
+                <span><strong>250+</strong> businesses supported</span>
+            </div>
+            <div class="impact-item">
+                <i class="bi bi-person-hearts"></i>
+                <span><strong>1,200+</strong> people placed</span>
+            </div>
+            <div class="impact-item">
+                <i class="bi bi-shield-check"></i>
+                <span><strong>98%</strong> client satisfaction</span>
+            </div>
+        </section>
+
+        <section class="intro container" id="about">
+            <p class="eyebrow">Who we are</p>
+            <h2>Connecting businesses with the people they need to succeed.</h2>
+            <p>STAFFIX is a professional staffing and recruitment company providing reliable and flexible workforce solutions across a range of industries. We identify, recruit, and supply suitable candidates based on each client's specific requirements.</p>
+        </section>
+
+        <section class="solutions container" id="solutions">
+            <div>
+                <p class="eyebrow">What we do</p>
+                <h2>Flexible solutions.<br>Professional service.</h2>
+            </div>
+            <div class="solution-grid">
+                <article class="solution-card">
+                    <i class="bi bi-clock-history"></i>
+                    <h3>Temporary staffing</h3>
+                    <p>Dependable workers for short-term assignments, seasonal demand, and staff shortages.</p>
+                </article>
+                <article class="solution-card">
+                    <i class="bi bi-person-check"></i>
+                    <h3>Permanent recruitment</h3>
+                    <p>Suitable candidates for permanent vacancies and the long-term success of your organisation.</p>
+                </article>
+                <article class="solution-card">
+                    <i class="bi bi-bar-chart-line"></i>
+                    <h3>Workforce support</h3>
+                    <p>Part-time and full-time staffing support for businesses of every size and industry.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="process container">
+            <div class="section-heading">
+                <p class="eyebrow">How it works</p>
+                <h2>A simpler way to<br>build your team.</h2>
+                <p>From the first conversation to the first day at work, our experienced team keeps every step clear, quick, and personal.</p>
+            </div>
+            <div class="process-list">
+                <article class="process-step">
+                    <span>01</span>
+                    <div><i class="bi bi-chat-square-text"></i><h3>Tell us what you need</h3><p>We learn about your role, team, schedule, and the qualities that matter most.</p></div>
+                </article>
+                <article class="process-step">
+                    <span>02</span>
+                    <div><i class="bi bi-search"></i><h3>We find the right people</h3><p>We search our network and carefully match candidates to your requirements.</p></div>
+                </article>
+                <article class="process-step">
+                    <span>03</span>
+                    <div><i class="bi bi-person-check"></i><h3>Make a confident hire</h3><p>Meet suitable candidates and get ongoing support from our responsive team.</p></div>
+                </article>
+            </div>
+        </section>
+
+        <section class="industries container">
+            <div>
+                <p class="eyebrow">Across many industries</p>
+                <h2>People for every<br>kind of business.</h2>
+            </div>
+            <div class="industry-tags">
+                <span><i class="bi bi-box-seam"></i> Warehousing & logistics</span>
+                <span><i class="bi bi-heart-pulse"></i> Health & social care</span>
+                <span><i class="bi bi-building"></i> Construction</span>
+                <span><i class="bi bi-shop"></i> Retail & hospitality</span>
+                <span><i class="bi bi-headset"></i> Customer service</span>
+                <span><i class="bi bi-laptop"></i> Office & administration</span>
+            </div>
+        </section>
+
+        <section class="why-us container">
+            <div class="why-card why-card-main">
+                <p class="eyebrow">Why STAFFIX</p>
+                <h2>More than a recruitment agency.</h2>
+                <p>We become a reliable extension of your team. Our people-first approach means better matches, faster responses, and support you can count on.</p>
+                <a class="text-link" href="#contact">Work with us <i class="bi bi-arrow-up-right"></i></a>
+            </div>
+            <div class="why-points">
+                <div><i class="bi bi-lightning-charge"></i><span><strong>Fast and responsive</strong>We move quickly when your business needs people.</span></div>
+                <div><i class="bi bi-patch-check"></i><span><strong>Quality focused</strong>We care about finding the right fit, not just filling a vacancy.</span></div>
+                <div><i class="bi bi-hand-thumbs-up"></i><span><strong>People first</strong>Professional support for clients and candidates alike.</span></div>
+            </div>
+        </section>
+
+        <section class="jobs container" id="jobs">
+            <div class="jobs-heading">
+                <div>
+                    <p class="eyebrow">Latest opportunities</p>
+                    <h2>New jobs waiting<br>for the right people.</h2>
+                </div>
+                <p>Explore our newest vacancies and find your next opportunity with STAFFIX.</p>
+            </div>
+            <div class="job-grid">
+                {% for job in jobs %}
+                <article class="job-card"><span class="job-type">{{ job.get_job_type_display }}</span>
+                    <h3>{{job.company_name}}</h3><h3>{{ job.job_title }}</h3><p><i class="bi bi-geo-alt"></i> {{ job.location }} &nbsp; <i class="bi bi-clock"></i> {{ job.get_employment_type_display }}</p><a href="{% url 'job_detail' job.slug %}">View job <i class="bi bi-arrow-up-right"></i></a></article>
+                {% empty %}
+                <p class="no-jobs">No job openings right now. Check back soon!</p>
+                {% endfor %}
+            </div>
+            <a class="button view-more" href="{% url 'viewmore_job' %}">View more jobs <i class="bi bi-arrow-up-right"></i></a>
+        </section>
+
+        <section class="mission container">
+            <i class="bi bi-quote"></i>
+            <p>Our mission is to provide businesses with the right people, in the right place, at the right time, while delivering a professional and customer-focused recruitment experience.</p>
+        </section>
+
+        <section class="testimonial container">
+            <i class="bi bi-chat-quote-fill"></i>
+            <blockquote>“STAFFIX understood exactly what we needed and helped us build a dependable team without the usual hassle.”</blockquote>
+            <p>Operations Manager <span>•</span> London-based business</p>
+        </section>
+
+        <section class="contact container" id="contact">
+            <div>
+                <p class="eyebrow">Let's work together</p>
+                <h2>Ready to build your team?</h2>
+            </div>
+            <a class="button" href="mailto:staffixrecruit@gmail.com">Talk to STAFFIX <i class="bi bi-arrow-up-right"></i></a>
+        </section>
+        <section class="contact-details container">
+            <a href="tel:+447881276266"><i class="bi bi-telephone"></i><span><small>Call our team</small>+44 7881 276266</span></a>
+            <a href="mailto:staffixrecruit@gmail.com"><i class="bi bi-envelope"></i><span><small>Email us</small>staffixrecruit@gmail.com</span></a>
+            <span><i class="bi bi-clock"></i><span><small>Working hours</small>Mon-Fri, 9:00am-5:30pm</span></span>
+        </section>
+    </main>
+
+   {% include 'footer.html' %}

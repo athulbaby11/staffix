@@ -1,0 +1,132 @@
+{% load static %}
+{% include "header.html" %}
+<main>
+    <section class="job-table-section container">
+        {% csrf_token %}        <div class="job-table-heading">
+            <div>
+                <p class="eyebrow">Admin workspace</p>
+                <h1>Job Applications</h1>
+                <p class="register-job-intro">Review candidate applications, approve suitable candidates or remove entries.</p>
+            </div>
+            <a class="button" href="{% url 'register_view' %}"><i class="bi bi-list-ul"></i> View registered jobs</a>
+            <a class="text-link register-job-list-link" href="{% url 'onboard' %}"><i class="bi bi-person-check"></i> Onboarded candidates</a>
+            <a class="text-link register-job-list-link" href="{% url 'admin_dashboard' %}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        </div>
+        <div id="application-table-success" class="form-success" role="status" hidden>
+            <i class="bi bi-check-circle-fill"></i>
+            <span id="application-table-success-text">Done!</span>
+        </div>
+        <div class="job-table-wrap">
+            <table class="job-table">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>NI Number</th>
+                        <th>Address</th>
+                        <th>Zip Code</th>
+                        <th>Date of Birth</th>
+                        <th>Passport</th>
+                        <th>Job Applied For</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for application in applications %}
+                    <tr data-application-id="{{ application.id }}">
+                        <td>{{ application.first_name }}</td>
+                        <td>{{ application.surname }}</td>
+                        <td>{{ application.email }}</td>
+                        <td>{{ application.phone_number }}</td>
+                        <td>{{ application.ni_number }}</td>
+                        <td>{{ application.address }}</td>
+                        <td>{{ application.zip_code }}</td>
+                        <td>{{ application.dob }}</td>
+                        <td><a href="{{ application.passport.url }}" target="_blank" rel="noopener">View file</a></td>
+                        <td>{{ application.job.job_title }}</td>
+                        <td class="job-table-actions">
+                            <button type="button" class="table-btn table-btn-update" data-approve-url="{% url 'approve_application' application.id %}"><i class="bi bi-check-circle"></i> Approve</button>
+                            <button type="button" class="table-btn table-btn-delete" data-delete-url="{% url 'delete_application' application.id %}"><i class="bi bi-trash3"></i> Delete</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="11" class="job-table-empty">No applications received yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<script>
+    (function () {
+        function getCsrfToken() {
+            var match = document.cookie.match(/csrftoken=([^;]+)/);
+            return match ? match[1] : '';
+        }
+
+        var successBanner = document.getElementById('application-table-success');
+        var successText = document.getElementById('application-table-success-text');
+
+        function showSuccess(message) {
+            successText.textContent = message;
+            successBanner.hidden = false;
+            successBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setTimeout(function () { successBanner.hidden = true; }, 5000);
+        }
+
+        document.querySelectorAll('.table-btn-update[data-approve-url]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var row = button.closest('tr');
+                fetch(button.dataset.approveUrl, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCsrfToken(),
+                    },
+                })
+                    .then(function (response) {
+                        if (!response.ok) { throw new Error('Request failed'); }
+                        return response.json();
+                    })
+                    .then(function () {
+                        row.remove();
+                        showSuccess('Application approved and moved to onboarded candidates!');
+                    })
+                    .catch(function () {
+                        alert('Something went wrong while approving the application. Please try again.');
+                    });
+            });
+        });
+
+        document.querySelectorAll('.table-btn-delete').forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (!confirm('Are you sure you want to delete this application?')) { return; }
+
+                var row = button.closest('tr');
+                fetch(button.dataset.deleteUrl, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCsrfToken(),
+                    },
+                })
+                    .then(function (response) {
+                        if (!response.ok) { throw new Error('Request failed'); }
+                        return response.json();
+                    })
+                    .then(function () {
+                        row.remove();
+                        showSuccess('Application deleted successfully!');
+                    })
+                    .catch(function () {
+                        alert('Something went wrong while deleting the application. Please try again.');
+                    });
+            });
+        });
+    })();
+</script>
+{% include "footer.html" %}

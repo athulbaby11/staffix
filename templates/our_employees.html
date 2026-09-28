@@ -1,0 +1,85 @@
+{% load static %}
+{% include "header.html" %}
+<main>
+    <section class="job-table-section container">
+        <div class="job-table-heading">
+            <div>
+                <p class="eyebrow">Admin workspace</p>
+                <h1>Our Employees</h1>
+                <p class="register-job-intro">All onboarded employees and their complete details in one place.</p>
+            </div>
+            <a class="button" href="{% url 'onboard' %}"><i class="bi bi-arrow-left"></i> Back to onboarded candidates</a>
+        </div>
+        <form class="table-search-form" method="get" action="{% url 'our_employees' %}">
+            <div class="table-search-field">
+                <i class="bi bi-search"></i>
+                <input type="text" name="q" value="{{ search_query }}" placeholder="Search by name...">
+            </div>
+            <button type="submit" class="button table-search-btn">Search</button>
+            {% if search_query %}<a class="table-search-clear" href="{% url 'our_employees' %}">Clear</a>{% endif %}
+        </form>
+        <div class="job-table-wrap">
+            <table class="job-table">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>NI Number</th>
+                        <th>Address</th>
+                        <th>Zip Code</th>
+                        <th>Date of Birth</th>
+                        <th>Job</th>
+                        <th>Passport</th>
+                        <th>Share Code</th>
+                        <th>Educational Qualification</th>
+                        <th>Passport Number</th>
+                        <th>CV</th>
+                        <th>Passport Photo</th>
+                        <th>DBS Certificate</th>
+                        <th>PCC Certificate</th>
+                        <th>Right To Work</th>
+                        <th>Extra Documents</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in employees %}
+                    <tr data-employee-id="{{ employee.id }}">
+                        <td>{{ employee.application.first_name }}</td>
+                        <td>{{ employee.application.surname }}</td>
+                        <td>{{ employee.application.email }}</td>
+                        <td>{{ employee.application.phone_number }}</td>
+                        <td>{{ employee.application.ni_number }}</td>
+                        <td>{{ employee.application.address }}</td>
+                        <td>{{ employee.application.zip_code }}</td>
+                        <td>{{ employee.application.dob }}</td>
+                        <td>{{ employee.application.job.job_title }}</td>
+                        <td><a href="{{ employee.application.passport.url }}" target="_blank" rel="noopener">View file</a></td>
+                        <td>{{ employee.share_code|default:"—" }}</td>
+                        <td>{{ employee.educational_qualification|default:"—" }}</td>
+                        <td>{{ employee.passport_number|default:"—" }}</td>
+                        <td>{% if employee.cv %}<a href="{{ employee.cv.url }}" target="_blank" rel="noopener">View file</a>{% else %}—{% endif %}</td>
+                        <td>{% if employee.passport_photo %}<a href="{{ employee.passport_photo.url }}" target="_blank" rel="noopener">View file</a>{% else %}—{% endif %}</td>
+                        <td>{% if employee.dbs_certificate %}<a href="{{ employee.dbs_certificate.url }}" target="_blank" rel="noopener">View file</a>{% else %}—{% endif %}</td>
+                        <td>{% if employee.pcc_certificate %}<a href="{{ employee.pcc_certificate.url }}" target="_blank" rel="noopener">View file</a>{% else %}—{% endif %}</td>
+                        <td>{% if employee.right_to_work %}<a href="{{ employee.right_to_work.url }}" target="_blank" rel="noopener">View file</a>{% else %}—{% endif %}</td>
+                        <td>{% if employee.extra_documents %}<a href="{{ employee.extra_documents.url }}" target="_blank" rel="noopener">View file</a>{% else %}—{% endif %}</td>
+                        <td>
+                            <a class="table-btn table-btn-update" href="{% url 'employee_detail' employee.id %}">
+                                <i class="bi bi-person-vcard"></i> Get all details
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="20" class="job-table-empty">{% if search_query %}No employees match "{{ search_query }}".{% else %}No employees added yet.{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+{% include "footer.html" %}

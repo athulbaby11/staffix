@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>staffix</title>
+</head>
+<body>
+    <header class="site-header sticky-top">
+        <nav class="navbar container" aria-label="Main navigation">
+            <a class="brand" href="{% url 'index' %}">STAFFIX</a>
+            <div class="nav-links">
+                <a href="{% url 'viewmore_job' %}">Find jobs</a>
+                <a href="{% url 'aboutus' %}">About us</a>
+                <a href="{% url 'contact' %}">Contact</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+                {% endif %}
+            </div>
+            <a class="button button-small" href="mailto:staffixrecruit@gmail.com">Get in touch</a>
+            {% if user.is_authenticated %}
+            <a class="button button-small header-logout-btn" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            {% endif %}
+            <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false"><i class="bi bi-list"></i></button>
+        </nav>
+    </header>

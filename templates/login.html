@@ -1,0 +1,27 @@
+{% load static %}
+{% include "header.html" %}
+<main>
+    <section class="login-section container">
+        <div class="login-form-wrap">
+            <p class="eyebrow">Admin workspace</p>
+            <h1>Admin Login</h1>
+            <p class="register-job-intro">Sign in with your admin email to manage jobs and applications.</p>
+            {% if error %}
+            <div class="form-error login-error">{{ error }}</div>
+            {% endif %}
+            <form method="post" action="{% url 'login' %}" class="login-form">
+                {% csrf_token %}
+                <div class="form-field">
+                    <label for="id_email">Email</label>
+                    <input type="email" name="email" id="id_email" required autofocus>
+                </div>
+                <div class="form-field">
+                    <label for="id_password">Password</label>
+                    <input type="password" name="password" id="id_password" required>
+                </div>
+                <button type="submit" class="button form-submit">Login <i class="bi bi-arrow-right"></i></button>
+            </form>
+        </div>
+    </section>
+</main>
+{% include "footer.html" %}

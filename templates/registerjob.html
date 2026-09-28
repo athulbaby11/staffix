@@ -1,0 +1,102 @@
+{% load static %}
+{% include 'header.html' %}
+<main>
+    <section class="register-job container">
+        <div class="register-job-heading">
+            <div>
+                <p class="eyebrow">Admin workspace</p>
+                <h1>Register a Job</h1>
+                <p class="register-job-intro">Add a clear, complete listing so the right candidates can find it quickly.</p>
+            </div>
+            <a class="text-link register-job-list-link" href="{% url 'register_view' %}"><i class="bi bi-list-ul"></i> View registered jobs</a>
+        </div>
+        <div id="register-job-success" class="form-success" role="status" hidden>
+            <i class="bi bi-check-circle-fill"></i>
+            <span>Job registered successfully!</span>
+        </div>
+        <form action="{% url 'register_job' %}" method="post" id="register-job-form">
+            {% csrf_token %}
+            <div class="form-field">
+                <label for="company-name">Company Name</label>
+                <input type="text" id="company-name" name="company_name" class="capitalize-input" pattern="[A-Z].*" title="First letter must be capital" required>
+            </div>
+            <div class="form-field">
+                <label for="job-title">Job Title</label>
+                <input type="text" id="job-title" name="job_title" class="capitalize-input" pattern="[A-Z].*" title="First letter must be capital" required>
+            </div>
+            <div class="form-field form-field-wide">
+                <label for="job-description">Job Description</label>
+                <textarea id="job-description" name="job_description" class="capitalize-input" required></textarea>
+            </div>
+            <div class="form-field">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" class="capitalize-input" pattern="[A-Z].*" title="First letter must be capital" required>
+            </div>
+            <div class="form-field">
+                <label for="salary">Salary/hour</label>
+                <div class="input-prefix">
+                    <span class="input-prefix-symbol">£</span>
+                    <input type="text" id="salary" name="salary" inputmode="decimal" pattern="[0-9]+(\.[0-9]{1,2})?" title="Enter salary amount in pounds, e.g. 25000" required>
+                </div>
+            </div>
+            <div class="form-field">
+                <label for="job-type">Job Type</label>
+                <select id="job-type" name="job_type" required>
+                    <option value="" disabled selected>Select job type</option>
+                    <option value="full_time">Full Time</option>
+                    <option value="part_time">Part Time</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label for="employment-type">Employment Type</label>
+                <select id="employment-type" name="employment_type" required>
+                    <option value="" disabled selected>Select employment type</option>
+                    <option value="permanent">Permanent</option>
+                    <option value="temporary">Temporary</option>
+                </select>
+            </div>
+
+            <button type="submit" class="button form-submit">Register Job <i class="bi bi-arrow-right"></i></button>
+        </form>
+    </section>
+</main>
+<script>
+    // Auto-capitalize the first letter of every text input/textarea marked with .capitalize-input
+    document.querySelectorAll('#register-job-form .capitalize-input').forEach(function (field) {
+        field.addEventListener('input', function () {
+            if (this.value.length > 0) {
+                this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);
+            }
+        });
+    });
+
+    // Submit the form via AJAX so the page doesn't navigate away; show a success banner instead.
+    (function () {
+        var form = document.getElementById('register-job-form');
+        var successBanner = document.getElementById('register-job-success');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            })
+                .then(function (response) {
+                    if (!response.ok) { throw new Error('Request failed'); }
+                    return response.json();
+                })
+                .then(function () {
+                    form.reset();
+                    successBanner.hidden = false;
+                    successBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(function () { successBanner.hidden = true; }, 5000);
+                })
+                .catch(function () {
+                    alert('Something went wrong while registering the job. Please try again.');
+                });
+        });
+    })();
+</script>
+{% include 'footer.html' %}
