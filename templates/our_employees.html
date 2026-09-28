@@ -22,6 +22,7 @@
             <table class="job-table">
                 <thead>
                     <tr>
+                        <th>S.No</th>
                         <th>First Name</th>
                         <th>Surname</th>
                         <th>Email</th>
@@ -30,6 +31,7 @@
                         <th>Address</th>
                         <th>Zip Code</th>
                         <th>Date of Birth</th>
+                        <th>Company Name</th>
                         <th>Job</th>
                         <th>Passport</th>
                         <th>Share Code</th>
@@ -47,6 +49,7 @@
                 <tbody>
                     {% for employee in employees %}
                     <tr data-employee-id="{{ employee.id }}">
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ employee.application.first_name }}</td>
                         <td>{{ employee.application.surname }}</td>
                         <td>{{ employee.application.email }}</td>
@@ -55,6 +58,7 @@
                         <td>{{ employee.application.address }}</td>
                         <td>{{ employee.application.zip_code }}</td>
                         <td>{{ employee.application.dob }}</td>
+                        <td>{{ employee.application.job.company_name }}</td>
                         <td>{{ employee.application.job.job_title }}</td>
                         <td><a href="{{ employee.application.passport.url }}" target="_blank" rel="noopener">View file</a></td>
                         <td>{{ employee.share_code|default:"—" }}</td>
@@ -74,7 +78,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="20" class="job-table-empty">{% if search_query %}No employees match "{{ search_query }}".{% else %}No employees added yet.{% endif %}</td>
+                        <td colspan="22" class="job-table-empty">{% if search_query %}No employees match "{{ search_query }}".{% else %}No employees added yet.{% endif %}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
