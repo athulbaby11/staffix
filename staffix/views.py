@@ -58,10 +58,13 @@ def apply_job(request, job_slug):
         )
 
         try:
-            application.full_clean()
+            application.full_clean(validate_unique=False, validate_constraints=False)
         except ValidationError as exc:
             for field, messages in exc.message_dict.items():
                 errors.setdefault(field, messages[0])
+
+        if not errors.get('email') and Application.objects.filter(job=job, email=application.email).exists():
+            errors['email'] = 'You have already applied for this job with this email address.'
 
         num1 = request.session.get('apply_captcha_num1')
         num2 = request.session.get('apply_captcha_num2')

@@ -74,10 +74,7 @@ class Application(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='applications')
     first_name = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)
-    email = models.EmailField(
-        unique=True,
-        error_messages={'unique': 'This email has already been used to apply for a job.'},
-    )
+    email = models.EmailField()
     phone_number = models.CharField(max_length=20, validators=[phone_number_validator])
     ni_number = models.CharField(max_length=13, validators=[ni_number_validator])
     address = models.TextField()
@@ -93,6 +90,11 @@ class Application(models.Model):
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['job', 'email'], name='unique_application_job_email'),
+        ]
 
     def __str__(self):
         return f"{self.first_name} {self.surname} - {self.job.job_title}"
