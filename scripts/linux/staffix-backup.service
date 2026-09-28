@@ -1,0 +1,7 @@
+[Unit]
+Description=Staffix database backup
+
+[Service]
+Type=oneshot
+WorkingDirectory=/path/to/staffix
+ExecStart=/path/to/staffix/.venv/bin/python manage.py backup_db --include-media

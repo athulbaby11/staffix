@@ -1,0 +1,153 @@
+{% load static %}
+{% include "header.html" %}
+<main>
+    <section class="register-job apply-now container">
+        <div class="register-job-heading">
+            <div>
+                <p class="eyebrow">Careers</p>
+                <h1>Apply Now</h1>
+                <p class="register-job-intro">You're applying for <strong>{{ job.job_title }}</strong> at {{ job.company_name }}. Fill in your details below and we'll be in touch.</p>
+            </div>
+            <a class="text-link register-job-list-link" href="{% url 'job_detail' job.slug %}" style="color: blue;"><i class="bi bi-arrow-left"></i> Back to job</a>
+        </div>
+        <div id="apply-now-success" class="form-success" role="status" hidden>
+            <i class="bi bi-check-circle-fill"></i>
+            <span>Application submitted successfully!</span>
+        </div>
+        <form action="{% url 'apply_job' job.slug %}" method="post" id="apply-now-form" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="form-field">
+                <label for="first-name">First Name</label>
+                <input type="text" id="first-name" name="first_name" class="capitalize-input" pattern="[A-Za-z ]+" title="Letters only" required>
+                <small class="form-error" id="error-first_name">{{ errors.first_name }}</small>
+            </div>
+            <div class="form-field">
+                <label for="surname">Surname</label>
+                <input type="text" id="surname" name="surname" class="capitalize-input" pattern="[A-Za-z ]+" title="Letters only" required>
+                <small class="form-error" id="error-surname">{{ errors.surname }}</small>
+            </div>
+            <div class="form-field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <small class="form-error" id="error-email">{{ errors.email }}</small>
+            </div>
+            <div class="form-field">
+                <label for="phone-number">Phone Number</label>
+                <input type="tel" id="phone-number" name="phone_number" pattern="^\+?[0-9 ]{7,15}$" title="Enter a valid phone number" required>
+                <small class="form-error" id="error-phone_number">{{ errors.phone_number }}</small>
+            </div>
+            <div class="form-field">
+                <label for="ni-number">National Insurance (NI) Number</label>
+                <input type="text" id="ni-number" name="ni_number" class="uppercase-input" pattern="[A-Za-z]{2}[0-9]{6}[A-Za-z]" title="Enter a valid NI number, e.g. QQ123456C" placeholder="e.g. QQ123456C" required>
+                <small class="form-error" id="error-ni_number">{{ errors.ni_number }}</small>
+            </div>
+            <div class="form-field">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" required>
+                <small class="form-error" id="error-dob">{{ errors.dob }}</small>
+            </div>
+            <div class="form-field form-field-wide">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" required></textarea>
+                <small class="form-error" id="error-address">{{ errors.address }}</small>
+            </div>
+            <div class="form-field">
+                <label for="zip-code">Zip Code</label>
+                <input type="text" id="zip-code" name="zip_code" class="uppercase-input" pattern="[A-Za-z0-9 ]{3,10}" title="Enter a valid zip/postal code" required>
+                <small class="form-error" id="error-zip_code">{{ errors.zip_code }}</small>
+            </div>
+            <div class="form-field form-field-wide">
+                <label for="passport">Passport (PDF, JPEG or PNG, max 3 MB)</label>
+                <input type="file" id="passport" name="passport" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" required>
+                <small class="form-hint">Accepted formats: PDF, JPEG, PNG. Maximum size: 3 MB.</small>
+                <small class="form-error" id="error-passport">{{ errors.passport }}</small>
+            </div>
+            <div class="form-field form-field-wide">
+                <label for="captcha">Security check: what is {{ num1 }} + {{ num2 }}?</label>
+                <input type="number" id="captcha" name="captcha" required>
+                <small class="form-error" id="error-captcha">{{ errors.captcha }}</small>
+            </div>
+
+            <button type="submit" class="button form-submit">Apply <i class="bi bi-arrow-right"></i></button>
+        </form>
+    </section>
+</main>
+<script>
+    // Auto-capitalize the first letter of name fields and force NI number to uppercase.
+    document.querySelectorAll('#apply-now-form .capitalize-input').forEach(function (field) {
+        field.addEventListener('input', function () {
+            if (this.value.length > 0) {
+                this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);
+            }
+        });
+    });
+    document.querySelectorAll('#apply-now-form .uppercase-input').forEach(function (field) {
+        field.addEventListener('input', function () {
+            this.value = this.value.toUpperCase();
+        });
+    });
+
+    (function () {
+        var form = document.getElementById('apply-now-form');
+        var successBanner = document.getElementById('apply-now-success');
+        var passportInput = document.getElementById('passport');
+        var MAX_PASSPORT_SIZE = 3 * 1024 * 1024; // 3 MB
+
+        function clearErrors() {
+            form.querySelectorAll('.form-error').forEach(function (el) { el.textContent = ''; });
+        }
+
+        // Warn immediately if the chosen passport file is too large.
+        passportInput.addEventListener('change', function () {
+            if (this.files.length && this.files[0].size > MAX_PASSPORT_SIZE) {
+                alert('Passport file must be smaller than 3 MB.');
+                this.value = '';
+            }
+        });
+
+        // Submit the form via AJAX so the page doesn't navigate away; show a success banner instead.
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            clearErrors();
+
+            if (passportInput.files.length && passportInput.files[0].size > MAX_PASSPORT_SIZE) {
+                alert('Passport file must be smaller than 3 MB.');
+                return;
+            }
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            })
+                .then(function (response) {
+                    return response.json().then(function (data) {
+                        return { ok: response.ok, data: data };
+                    });
+                })
+                .then(function (result) {
+                    if (result.ok && result.data.success) {
+                        form.reset();
+                        successBanner.hidden = false;
+                        successBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(function () { successBanner.hidden = true; }, 5000);
+                        return;
+                    }
+
+                    var errors = (result.data && result.data.errors) || {};
+                    var fieldNames = Object.keys(errors);
+                    fieldNames.forEach(function (field) {
+                        var el = document.getElementById('error-' + field);
+                        if (el) { el.textContent = errors[field]; }
+                    });
+                    if (!fieldNames.length) {
+                        alert('Something went wrong while submitting your application. Please try again.');
+                    }
+                })
+                .catch(function () {
+                    alert('Something went wrong while submitting your application. Please try again.');
+                });
+        });
+    })();
+</script>
+{% include 'footer.html' %}

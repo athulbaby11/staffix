@@ -1,0 +1,119 @@
+{% load static %}
+{% include "header.html" %}
+<main>
+    <section class="job-table-section container">
+        {% csrf_token %}
+        <div class="job-table-heading">
+            <div>
+                <p class="eyebrow">Admin workspace</p>
+                <h1>Onboarded Candidates</h1>
+                <p class="register-job-intro">Approved applicants ready to be onboarded. Remove entries once onboarding is complete.</p>
+            </div>
+            <a class="button" href="{% url 'view_applications' %}"><i class="bi bi-arrow-left"></i> Back to applications</a>
+        </div>
+        <form class="table-search-form" method="get" action="{% url 'onboard' %}">
+            <div class="table-search-field">
+                <i class="bi bi-search"></i>
+                <input type="text" name="q" value="{{ search_query }}" placeholder="Search by name...">
+            </div>
+            <button type="submit" class="button table-search-btn">Search</button>
+            {% if search_query %}<a class="table-search-clear" href="{% url 'onboard' %}">Clear</a>{% endif %}
+        </form>
+        <div id="onboard-table-success" class="form-success" role="status" hidden>
+            <i class="bi bi-check-circle-fill"></i>
+            <span id="onboard-table-success-text">Done!</span>
+        </div>
+        <div class="job-table-wrap">
+            <table class="job-table">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>NI Number</th>
+                        <th>Address</th>
+                        <th>Zip Code</th>
+                        <th>Date of Birth</th>
+                        <th>Passport</th>
+                        <th>Job Applied For</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for application in applications %}
+                    <tr data-application-id="{{ application.id }}">
+                        <td>{{ application.first_name }}</td>
+                        <td>{{ application.surname }}</td>
+                        <td>{{ application.email }}</td>
+                        <td>{{ application.phone_number }}</td>
+                        <td>{{ application.ni_number }}</td>
+                        <td>{{ application.address }}</td>
+                        <td>{{ application.zip_code }}</td>
+                        <td>{{ application.dob }}</td>
+                        <td><a href="{{ application.passport.url }}" target="_blank" rel="noopener">View file</a></td>
+                        <td>{{ application.job.job_title }}</td>
+                        <td class="job-table-actions">
+                            {% if application.employee %}
+                            <a class="table-btn table-btn-update" href="{% url 'add_employee' application.id %}"><i class="bi bi-pencil-square"></i> Edit employee details</a>
+                            {% else %}
+                            <a class="table-btn table-btn-update" href="{% url 'add_employee' application.id %}"><i class="bi bi-person-plus-fill"></i> Add as our employee</a>
+                            {% endif %}
+                            <button type="button" class="table-btn table-btn-delete" data-delete-url="{% url 'delete_onboard' application.id %}"><i class="bi bi-trash3"></i> Delete</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="11" class="job-table-empty">{% if search_query %}No onboarded candidates match "{{ search_query }}".{% else %}No onboarded candidates yet.{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<script>
+    (function () {
+        function getCsrfToken() {
+            var match = document.cookie.match(/csrftoken=([^;]+)/);
+            return match ? match[1] : '';
+        }
+
+        var successBanner = document.getElementById('onboard-table-success');
+        var successText = document.getElementById('onboard-table-success-text');
+
+        function showSuccess(message) {
+            successText.textContent = message;
+            successBanner.hidden = false;
+            successBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setTimeout(function () { successBanner.hidden = true; }, 5000);
+        }
+
+        document.querySelectorAll('.table-btn-delete').forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (!confirm('Are you sure you want to delete this candidate?')) { return; }
+
+                var row = button.closest('tr');
+                fetch(button.dataset.deleteUrl, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCsrfToken(),
+                    },
+                })
+                    .then(function (response) {
+                        if (!response.ok) { throw new Error('Request failed'); }
+                        return response.json();
+                    })
+                    .then(function () {
+                        row.remove();
+                        showSuccess('Candidate deleted successfully!');
+                    })
+                    .catch(function () {
+                        alert('Something went wrong while deleting the candidate. Please try again.');
+                    });
+            });
+        });
+    })();
+</script>
+{% include "footer.html" %}

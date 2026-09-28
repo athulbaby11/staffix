@@ -1,0 +1,50 @@
+{% load static %}
+{% include "header.html" %}
+
+<main>
+    <section class="jobs-page-intro container">
+        <p class="eyebrow">STAFFIX opportunities</p>
+        <h1>All open<br><span>job vacancies.</span></h1>
+        <p class="hero-text">Every role registered with STAFFIX, all in one place.</p>
+    </section>
+
+    <section class="jobs container all-jobs">
+        <div class="jobs-heading">
+            <div>
+                <p class="eyebrow">All current vacancies</p>
+                <h2>Explore open roles.</h2>
+            </div>
+            <p>New opportunities are added regularly by businesses looking for dependable people.</p>
+        </div>
+        {% if jobs %}
+        <div class="job-filters" aria-label="Filter jobs">
+            <label class="job-search"><i class="bi bi-search"></i><span class="visually-hidden">Search jobs</span><input id="job-search" type="search" placeholder="Search job title or company" autocomplete="off"></label>
+            <label><span class="visually-hidden">Location</span><select id="job-location">
+                <option value="">All locations</option>
+                {% for loc in locations %}<option value="{{ loc }}">{{ loc }}</option>{% endfor %}
+            </select></label>
+            <label><span class="visually-hidden">Job type</span><select id="job-type-filter">
+                <option value="">All job types</option>
+                <option value="Full Time">Full Time</option>
+                <option value="Part Time">Part Time</option>
+            </select></label>
+            <label><span class="visually-hidden">Employment type</span><select id="job-employment-filter">
+                <option value="">All employment types</option>
+                <option value="Permanent">Permanent</option>
+                <option value="Temporary">Temporary</option>
+            </select></label>
+        </div>
+        <p class="job-results" id="job-results" aria-live="polite"></p>
+        <div class="job-grid">
+            {% for job in jobs %}
+            <article class="job-card" data-title="{{ job.job_title }}" data-company="{{ job.company_name }}" data-location="{{ job.location }}" data-type="{{ job.get_job_type_display }}" data-employment="{{ job.get_employment_type_display }}"><span class="job-type">{{ job.get_job_type_display }}</span><h3>{{ job.job_title }}</h3><p class="job-company">{{ job.company_name }}</p><p><i class="bi bi-geo-alt"></i> {{ job.location }} &nbsp; <i class="bi bi-clock"></i> {{ job.get_employment_type_display }}</p><a href="{% url 'job_detail' job.slug %}">View job <i class="bi bi-arrow-up-right"></i></a></article>
+            {% endfor %}
+            <p class="no-jobs" id="no-jobs" hidden>No jobs match your filters. Try a different search.</p>
+        </div>
+        {% else %}
+        <p class="no-jobs">No job openings right now. Check back soon!</p>
+        {% endif %}
+    </section>
+</main>
+
+{% include "footer.html" %}

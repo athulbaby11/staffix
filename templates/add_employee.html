@@ -1,0 +1,161 @@
+{% load static %}
+{% include "header.html" %}
+<main>
+    <section class="register-job add-employee container">
+        <div class="register-job-heading">
+            <div>
+                <p class="eyebrow">Admin workspace</p>
+                <h1>Add Employee Details</h1>
+                <p class="register-job-intro">Complete the additional onboarding details for <strong>{{ application.first_name }} {{ application.surname }}</strong>.</p>
+            </div>
+            <a class="text-link register-job-list-link" href="{% url 'onboard' %}"><i class="bi bi-arrow-left"></i> Back to onboarded candidates</a>
+        </div>
+
+        <div id="add-employee-success" class="form-success" role="status" hidden>
+            <i class="bi bi-check-circle-fill"></i>
+            <span>Employee details saved successfully!</span>
+        </div>
+
+        <div class="employee-existing-details">
+            <h2><i class="bi bi-person-lines-fill"></i> Application details</h2>
+            <div class="employee-existing-grid">
+                <div><span>First Name</span><strong>{{ application.first_name }}</strong></div>
+                <div><span>Surname</span><strong>{{ application.surname }}</strong></div>
+                <div><span>Email</span><strong>{{ application.email }}</strong></div>
+                <div><span>Phone Number</span><strong>{{ application.phone_number }}</strong></div>
+                <div><span>NI Number</span><strong>{{ application.ni_number }}</strong></div>
+                <div><span>Date of Birth</span><strong>{{ application.dob }}</strong></div>
+                <div><span>Address</span><strong>{{ application.address }}</strong></div>
+                <div><span>Zip Code</span><strong>{{ application.zip_code }}</strong></div>
+                <div><span>Job Applied For</span><strong>{{ application.job.job_title }}</strong></div>
+                <div><span>Passport</span><strong><a href="{{ application.passport.url }}" target="_blank" rel="noopener">View file</a></strong></div>
+            </div>
+        </div>
+
+        <form action="{% url 'add_employee' application.id %}" method="post" id="add-employee-form" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <h2 class="employee-form-title"><i class="bi bi-file-earmark-plus-fill"></i> Additional employee details</h2>
+            <p class="form-hint employee-optional-hint">All fields below are optional — save whatever details are available now and add the rest later.</p>
+            <div class="form-field">
+                <label for="share-code">Share Code</label>
+                <input type="text" id="share-code" name="share_code" value="{{ employee.share_code|default:'' }}">
+                <small class="form-error" id="error-share_code">{{ errors.share_code }}</small>
+            </div>
+            <div class="form-field">
+                <label for="educational-qualification">Educational Qualification</label>
+                <input type="text" id="educational-qualification" name="educational_qualification" value="{{ employee.educational_qualification|default:'' }}">
+                <small class="form-error" id="error-educational_qualification">{{ errors.educational_qualification }}</small>
+            </div>
+            <div class="form-field">
+                <label for="passport-number">Passport Number</label>
+                <input type="text" id="passport-number" name="passport_number" value="{{ employee.passport_number|default:'' }}">
+                <small class="form-error" id="error-passport_number">{{ errors.passport_number }}</small>
+            </div>
+            <div class="form-field">
+                <label for="cv">CV (PDF, JPEG or PNG, max 3 MB)</label>
+                <input type="file" id="cv" name="cv" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+                {% if employee.cv %}<small class="form-hint">Current file: <a href="{{ employee.cv.url }}" target="_blank" rel="noopener">View</a>. Upload a new file to replace it.</small>{% endif %}
+                <small class="form-error" id="error-cv">{{ errors.cv }}</small>
+            </div>
+            <div class="form-field">
+                <label for="passport-photo">Passport Size Photo (JPEG or PNG, max 3 MB)</label>
+                <input type="file" id="passport-photo" name="passport_photo" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+                {% if employee.passport_photo %}<small class="form-hint">Current file: <a href="{{ employee.passport_photo.url }}" target="_blank" rel="noopener">View</a>. Upload a new file to replace it.</small>{% endif %}
+                <small class="form-error" id="error-passport_photo">{{ errors.passport_photo }}</small>
+            </div>
+            <div class="form-field">
+                <label for="dbs-certificate">DBS Certificate (PDF, JPEG or PNG, max 3 MB)</label>
+                <input type="file" id="dbs-certificate" name="dbs_certificate" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+                {% if employee.dbs_certificate %}<small class="form-hint">Current file: <a href="{{ employee.dbs_certificate.url }}" target="_blank" rel="noopener">View</a>. Upload a new file to replace it.</small>{% endif %}
+                <small class="form-error" id="error-dbs_certificate">{{ errors.dbs_certificate }}</small>
+            </div>
+            <div class="form-field">
+                <label for="pcc-certificate">PCC Certificate (PDF, JPEG or PNG, max 3 MB)</label>
+                <input type="file" id="pcc-certificate" name="pcc_certificate" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+                {% if employee.pcc_certificate %}<small class="form-hint">Current file: <a href="{{ employee.pcc_certificate.url }}" target="_blank" rel="noopener">View</a>. Upload a new file to replace it.</small>{% endif %}
+                <small class="form-error" id="error-pcc_certificate">{{ errors.pcc_certificate }}</small>
+            </div>
+            <div class="form-field">
+                <label for="right-to-work">Right To Work (PDF, JPEG or PNG, max 3 MB)</label>
+                <input type="file" id="right-to-work" name="right_to_work" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+                {% if employee.right_to_work %}<small class="form-hint">Current file: <a href="{{ employee.right_to_work.url }}" target="_blank" rel="noopener">View</a>. Upload a new file to replace it.</small>{% endif %}
+                <small class="form-error" id="error-right_to_work">{{ errors.right_to_work }}</small>
+            </div>
+            <div class="form-field">
+                <label for="extra-documents">Extra Documents (PDF, JPEG or PNG, max 3 MB)</label>
+                <input type="file" id="extra-documents" name="extra_documents" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+                {% if employee.extra_documents %}<small class="form-hint">Current file: <a href="{{ employee.extra_documents.url }}" target="_blank" rel="noopener">View</a>. Upload a new file to replace it.</small>{% endif %}
+                <small class="form-error" id="error-extra_documents">{{ errors.extra_documents }}</small>
+            </div>
+
+            <button type="submit" class="button form-submit">Save Employee Details <i class="bi bi-arrow-right"></i></button>
+        </form>
+    </section>
+</main>
+<script>
+    (function () {
+        var form = document.getElementById('add-employee-form');
+        var successBanner = document.getElementById('add-employee-success');
+        var MAX_FILE_SIZE = 3 * 1024 * 1024; // 3 MB
+
+        function clearErrors() {
+            form.querySelectorAll('.form-error').forEach(function (el) { el.textContent = ''; });
+        }
+
+        form.querySelectorAll('input[type="file"]').forEach(function (input) {
+            input.addEventListener('change', function () {
+                if (this.files.length && this.files[0].size > MAX_FILE_SIZE) {
+                    alert('File must be smaller than 3 MB.');
+                    this.value = '';
+                }
+            });
+        });
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            clearErrors();
+
+            var oversized = false;
+            form.querySelectorAll('input[type="file"]').forEach(function (input) {
+                if (input.files.length && input.files[0].size > MAX_FILE_SIZE) { oversized = true; }
+            });
+            if (oversized) {
+                alert('One or more files exceed the 3 MB limit.');
+                return;
+            }
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            })
+                .then(function (response) {
+                    return response.json().then(function (data) {
+                        return { ok: response.ok, data: data };
+                    });
+                })
+                .then(function (result) {
+                    if (result.ok && result.data.success) {
+                        successBanner.hidden = false;
+                        successBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(function () { window.location.href = "{% url 'onboard' %}"; }, 1200);
+                        return;
+                    }
+
+                    var errors = (result.data && result.data.errors) || {};
+                    var fieldNames = Object.keys(errors);
+                    fieldNames.forEach(function (field) {
+                        var el = document.getElementById('error-' + field);
+                        if (el) { el.textContent = errors[field]; }
+                    });
+                    if (!fieldNames.length) {
+                        alert('Something went wrong while saving employee details. Please try again.');
+                    }
+                })
+                .catch(function () {
+                    alert('Something went wrong while saving employee details. Please try again.');
+                });
+        });
+    })();
+</script>
+{% include "footer.html" %}

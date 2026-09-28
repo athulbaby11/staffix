@@ -1,0 +1,36 @@
+{% load static %}
+{% include "header.html" %}
+
+<main>
+    <section class="job-detail container">
+        <a class="text-link back-link" href="{% url 'viewmore_job' %}" style="color: blue;"><i class="bi bi-arrow-left"></i> Back to all jobs</a>
+        <div class="job-detail-layout">
+            <article class="job-detail-card">
+                <div class="job-detail-topline">
+                    <span class="job-type">{{ job.get_job_type_display }}</span>
+                    <span class="job-detail-status"><i class="bi bi-check-circle-fill"></i> Available now</span>
+                </div>
+                <h1>{{ job.job_title }}</h1>
+                <p class="job-detail-company"><i class="bi bi-building"></i> {{ job.company_name }}</p>
+                <div class="job-detail-meta">
+                    <span><i class="bi bi-geo-alt-fill"></i> {{ job.location }}</span>
+                    <span><i class="bi bi-clock-fill"></i> {{ job.get_employment_type_display }}</span>
+                    <span><i class="bi bi-cash-stack"></i> £{{ job.salary }}</span>
+                </div>
+                <div class="job-detail-description-block">
+                    <h2><i class="bi bi-file-text"></i> Job description</h2>
+                    <p class="job-detail-description">{{ job.job_description|linebreaksbr }}</p>
+                </div>
+            </article>
+            <aside class="job-detail-apply">
+                <span class="job-apply-icon"><i class="bi bi-send-fill"></i></span>
+                <h2>Interested in this role?</h2>
+                <p>Take the next step and let our team help you with your application.</p>
+                <a class="button job-apply-now" href="{% url 'apply_job' job.slug %}">Apply now <i class="bi bi-arrow-up-right"></i></a>
+                <small><i class="bi bi-shield-check"></i> Your details are handled securely.</small>
+            </aside>
+        </div>
+    </section>
+</main>
+
+{% include "footer.html" %}

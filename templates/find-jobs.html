@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Find jobs | STAFFIX</title>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar container" aria-label="Main navigation">
+            <a class="brand" href="index.html">STAFFIX</a>
+            <div class="nav-links">
+                <a href="find-jobs.html">Find jobs</a>
+                <a href="about-us.html">About us</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <a class="button button-small" href="contact.html">Get in touch</a>
+            <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false"><i class="bi bi-list"></i></button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="jobs-page-intro container">
+            <p class="eyebrow">STAFFIX opportunities</p>
+            <h1>Find your next<br><span>opportunity.</span></h1>
+            <p class="hero-text">Businesses are hiring now. Find a role that matches your skills, location and availability, then apply in a few simple steps.</p>
+        </section>
+
+        <section class="jobs container all-jobs">
+            <div class="jobs-heading">
+                <div>
+                    <p class="eyebrow">All current vacancies</p>
+                    <h2>Explore open roles.</h2>
+                </div>
+                <p>New opportunities are added regularly by businesses looking for dependable people.</p>
+            </div>
+            <div class="job-filters" aria-label="Filter jobs">
+                <label class="job-search"><i class="bi bi-search"></i><span class="visually-hidden">Search jobs</span><input id="job-search" type="search" placeholder="Search role or business" autocomplete="off"></label>
+                <label><span class="visually-hidden">Location</span><select id="job-location"><option value="">All locations</option><option>Manchester</option><option>Birmingham</option><option>Leeds</option><option>Liverpool</option><option>Bristol</option><option>Sheffield</option><option>Nottingham</option><option>London</option><option>Coventry</option><option>York</option><option>Derby</option><option>Glasgow</option></select></label>
+                <label><span class="visually-hidden">Job type</span><select id="job-type-filter"><option value="">All job types</option><option>Full-time</option><option>Part-time</option><option>Temporary</option></select></label>
+            </div>
+            <p class="job-results" id="job-results" aria-live="polite"></p>
+            <div class="job-grid">
+                <article class="job-card" data-title="Warehouse Operative" data-company="Northline Logistics" data-location="Manchester" data-type="Full-time"><span class="job-type">Full-time</span><h3>Warehouse Operative</h3><p class="job-company">Northline Logistics</p><p><i class="bi bi-geo-alt"></i> Manchester &nbsp; <i class="bi bi-clock"></i> Immediate start</p><button class="job-apply" type="button" data-job="Warehouse Operative">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+                <article class="job-card" data-title="Care Assistant" data-company="Helping Hands Care" data-location="Birmingham" data-type="Part-time"><span class="job-type">Part-time</span><h3>Care Assistant</h3><p class="job-company">Helping Hands Care</p><p><i class="bi bi-geo-alt"></i> Birmingham &nbsp; <i class="bi bi-clock"></i> Flexible hours</p><button class="job-apply" type="button" data-job="Care Assistant">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+                <article class="job-card" data-title="LGV Driver" data-company="RapidRoute Transport" data-location="Leeds" data-type="Full-time"><span class="job-type">Full-time</span><h3>LGV Driver</h3><p class="job-company">RapidRoute Transport</p><p><i class="bi bi-geo-alt"></i> Leeds &nbsp; <i class="bi bi-clock"></i> Day shift</p><button class="job-apply" type="button" data-job="LGV Driver">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+                <article class="job-card" data-title="Production Operative" data-company="ForgeWorks Manufacturing" data-location="Liverpool" data-type="Temporary"><span class="job-type">Temporary</span><h3>Production Operative</h3><p class="job-company">ForgeWorks Manufacturing</p><p><i class="bi bi-geo-alt"></i> Liverpool &nbsp; <i class="bi bi-clock"></i> Immediate start</p><button class="job-apply" type="button" data-job="Production Operative">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+                <article class="job-card" data-title="Office Administrator" data-company="Brighton & Co." data-location="Bristol" data-type="Full-time"><span class="job-type">Full-time</span><h3>Office Administrator</h3><p class="job-company">Brighton &amp; Co.</p><p><i class="bi bi-geo-alt"></i> Bristol &nbsp; <i class="bi bi-clock"></i> Monday-Friday</p><button class="job-apply" type="button" data-job="Office Administrator">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+                <article class="job-card" data-title="Customer Service Advisor" data-company="Connect Support" data-location="Sheffield" data-type="Part-time"><span class="job-type">Part-time</span><h3>Customer Service Advisor</h3><p class="job-company">Connect Support</p><p><i class="bi bi-geo-alt"></i> Sheffield &nbsp; <i class="bi bi-clock"></i> Flexible hours</p><button class="job-apply" type="button" data-job="Customer Service Advisor">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+                <article class="job-card" data-title="Electrician" data-company="SureSpark Services" data-location="Nottingham" data-type="Full-time"><span class="job-type">Full-time</span><h3>Electrician</h3><p class="job-company">SureSpark Services</p><p><i class="bi bi-geo-alt"></i> Nottingham &nbsp; <i class="bi bi-clock"></i> Permanent</p><button class="job-apply" type="button" data-job="Electrician">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+                <article class="job-card" data-title="Kitchen Assistant" data-company="The Green Fork" data-location="London" data-type="Temporary"><span class="job-type">Temporary</span><h3>Kitchen Assistant</h3><p class="job-company">The Green Fork</p><p><i class="bi bi-geo-alt"></i> London &nbsp; <i class="bi bi-clock"></i> Evening shift</p><button class="job-apply" type="button" data-job="Kitchen Assistant">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+                <article class="job-card" data-title="Class 2 Driver" data-company="CityHaul Logistics" data-location="Coventry" data-type="Full-time"><span class="job-type">Full-time</span><h3>Class 2 Driver</h3><p class="job-company">CityHaul Logistics</p><p><i class="bi bi-geo-alt"></i> Coventry &nbsp; <i class="bi bi-clock"></i> Immediate start</p><button class="job-apply" type="button" data-job="Class 2 Driver">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+                <article class="job-card" data-title="Retail Assistant" data-company="Market House Stores" data-location="York" data-type="Part-time"><span class="job-type">Part-time</span><h3>Retail Assistant</h3><p class="job-company">Market House Stores</p><p><i class="bi bi-geo-alt"></i> York &nbsp; <i class="bi bi-clock"></i> Weekend work</p><button class="job-apply" type="button" data-job="Retail Assistant">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+                <article class="job-card" data-title="Site Supervisor" data-company="BuildRight Group" data-location="Derby" data-type="Full-time"><span class="job-type">Full-time</span><h3>Site Supervisor</h3><p class="job-company">BuildRight Group</p><p><i class="bi bi-geo-alt"></i> Derby &nbsp; <i class="bi bi-clock"></i> Permanent</p><button class="job-apply" type="button" data-job="Site Supervisor">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+                <article class="job-card" data-title="Event Staff" data-company="LivePoint Events" data-location="Glasgow" data-type="Temporary"><span class="job-type">Temporary</span><h3>Event Staff</h3><p class="job-company">LivePoint Events</p><p><i class="bi bi-geo-alt"></i> Glasgow &nbsp; <i class="bi bi-clock"></i> Flexible hours</p><button class="job-apply" type="button" data-job="Event Staff">Apply now <i class="bi bi-arrow-up-right"></i></button></article>
+            </div>
+            <p class="no-jobs" id="no-jobs" hidden>No roles match your search. Try changing your filters.</p>
+        </section>
+    </main>
+
+    <div class="application-modal" id="application-modal" hidden>
+        <div class="modal-backdrop" data-close-application></div>
+        <section class="application-dialog" role="dialog" aria-modal="true" aria-labelledby="application-title">
+            <button class="modal-close" type="button" aria-label="Close application form" data-close-application><i class="bi bi-x-lg"></i></button>
+            <div id="application-form-view">
+                <p class="eyebrow">Apply for a role</p>
+                <h2 id="application-title">Send your application.</h2>
+                <p class="modal-role">Applying for <strong id="selected-job"></strong></p>
+                <form id="application-form">
+                    <label>Full name<input name="name" type="text" required autocomplete="name"></label>
+                    <label>Email address<input name="email" type="email" required autocomplete="email"></label>
+                    <label>Phone number<input name="phone" type="tel" required autocomplete="tel"></label>
+                    <label>Tell us about your experience<textarea name="message" rows="3" placeholder="A short introduction (optional)"></textarea></label>
+                    <button class="button" type="submit">Submit application <i class="bi bi-arrow-up-right"></i></button>
+                </form>
+            </div>
+            <div class="application-success" id="application-success" hidden>
+                <i class="bi bi-check-circle"></i>
+                <h2>Application received.</h2>
+                <p>Thanks for applying. Our team will review your details and be in touch soon.</p>
+                <button class="button" type="button" data-close-application>Done</button>
+            </div>
+        </section>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div>
+                <a class="brand" href="index.html">STAFFIX</a>
+                <p>Reliable people. Better businesses.</p>
+                <span class="footer-description">Connecting ambitious businesses with dependable people and flexible workforce solutions.</span>
+                <div class="social-links" aria-label="Social media links">
+                    <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="STAFFIX on LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="STAFFIX on Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="mailto:hello@staffix.com" aria-label="Email STAFFIX"><i class="bi bi-envelope"></i></a>
+                </div>
+            </div>
+            <address>
+                <strong>Office address</strong>
+                <span>2A Heigham Road, High Point Offices,<br>E6 2JG</span>
+            </address>
+            <div class="footer-contact">
+                <a href="tel:+442012345678">+44 (0)20 1234 5678</a>
+                <a href="mailto:hello@staffix.com">hello@staffix.com</a>
+            </div>
+            <div class="footer-links">
+                <strong>Quick links</strong>
+                <a href="index.html#home">Home</a>
+                <a href="index.html#about">About us</a>
+                <a href="find-jobs.html">Find jobs</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+            <div class="footer-hours">
+                <strong>Office hours</strong>
+                <span>Monday - Friday</span>
+                <span>9:00am - 5:30pm</span>
+                <small>We are closed on weekends and bank holidays.</small>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <span>&copy; 2026 STAFFIX. All rights reserved.</span>
+            <span>Staffing made simple.</span>
+        </div>
+    </footer>
+    <a class="whatsapp-button" href="https://wa.me/447000000000?text=Hello%20STAFFIX" target="_blank" rel="noopener" aria-label="Chat with STAFFIX on WhatsApp"><i class="bi bi-whatsapp"></i><span>Chat with us</span></a>
+    <script src="js/script.js"></script>
+</body>
+</html>
