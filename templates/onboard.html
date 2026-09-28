@@ -27,6 +27,7 @@
             <table class="job-table">
                 <thead>
                     <tr>
+                        <th>S.No</th>
                         <th>First Name</th>
                         <th>Surname</th>
                         <th>Email</th>
@@ -36,6 +37,7 @@
                         <th>Zip Code</th>
                         <th>Date of Birth</th>
                         <th>Passport</th>
+                        <th>Company Name</th>
                         <th>Job Applied For</th>
                         <th>Action</th>
                     </tr>
@@ -43,6 +45,7 @@
                 <tbody>
                     {% for application in applications %}
                     <tr data-application-id="{{ application.id }}">
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ application.first_name }}</td>
                         <td>{{ application.surname }}</td>
                         <td>{{ application.email }}</td>
@@ -52,6 +55,7 @@
                         <td>{{ application.zip_code }}</td>
                         <td>{{ application.dob }}</td>
                         <td><a href="{{ application.passport.url }}" target="_blank" rel="noopener">View file</a></td>
+                        <td>{{ application.job.company_name }}</td>
                         <td>{{ application.job.job_title }}</td>
                         <td class="job-table-actions">
                             {% if application.employee %}
@@ -64,7 +68,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="11" class="job-table-empty">{% if search_query %}No onboarded candidates match "{{ search_query }}".{% else %}No onboarded candidates yet.{% endif %}</td>
+                        <td colspan="13" class="job-table-empty">{% if search_query %}No onboarded candidates match "{{ search_query }}".{% else %}No onboarded candidates yet.{% endif %}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
