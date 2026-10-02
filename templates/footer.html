@@ -40,7 +40,9 @@
             <span>Staffing made simple.</span>
         </div>
     </footer>
+    {% if not user.is_authenticated %}
     <a class="whatsapp-button" href="https://wa.me/447881276266?text=Hello%20STAFFIX! I have a query regarding your services." target="_blank" rel="noopener" aria-label="Chat with STAFFIX on WhatsApp"><i class="bi bi-whatsapp"></i><span>Chat with us</span></a>
+    {% endif %}
 
 
     <!-- Popper.js CDN -->

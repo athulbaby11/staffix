@@ -30,6 +30,7 @@ urlpatterns = [
     path('view-more-jobs/', views.viewmore_job , name='viewmore_job'),
     path('job/<slug:job_slug>/', views.job_detail , name='job_detail'),
     path('apply/<slug:job_slug>/', views.apply_job , name='apply_job'),
+    path('api/', include('api_app.urls')),
     path('', include("admin_app.urls")),
     path('', include("user_app.urls")),
 ]

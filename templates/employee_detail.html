@@ -23,6 +23,7 @@
                     <p class="employee-profile-label"><i class="bi bi-patch-check-fill"></i> STAFFIX · EMPLOYEE PROFILE</p>
                     <h1>{{ employee.application.first_name }} {{ employee.application.surname }}</h1>
                     <p class="employee-profile-role">{{ employee.application.job.job_title }}</p>
+                    <p class="employee-profile-bio"><i class="bi bi-building"></i> {{ employee.application.job.company_name }}</p>
                     <div class="employee-profile-contact-list">
                         <a class="employee-profile-contact" href="mailto:{{ employee.application.email }}"><i class="bi bi-envelope"></i> {{ employee.application.email }}</a>
                         <a class="employee-profile-contact" href="tel:{{ employee.application.phone_number }}"><i class="bi bi-telephone"></i> {{ employee.application.phone_number }}</a>

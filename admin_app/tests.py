@@ -104,6 +104,7 @@ class AddEmployeeDocumentTests(TestCase):
         response = self.client.get(reverse('employee_detail', args=[employee.id]))
 
         self.assertContains(response, 'Alex Smith')
+        self.assertContains(response, 'Example')
         self.assertContains(response, 'alex@example.com')
         self.assertContains(response, 'ABC123')
         self.assertContains(response, 'Bachelor degree')
@@ -113,6 +114,7 @@ class AddEmployeeDocumentTests(TestCase):
         self.assertContains(response, 'employee-profile-photo')
         self.assertContains(response, 'Download / Print CV')
         self.assertContains(response, 'Employment &amp; qualifications')
+        self.assertNotContains(response, 'whatsapp-button')
 
     def test_employee_profile_returns_not_found_for_unknown_employee(self):
         response = self.client.get(reverse('employee_detail', args=[0]))
