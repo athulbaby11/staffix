@@ -66,9 +66,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
     'admin_app',
     'user_app',
-    'staffix'
+    'staffix',
+    'api_app',
 ]
 
 MIDDLEWARE = [
@@ -192,6 +195,16 @@ BACKUP_DIR = Path(os.environ.get('DJANGO_BACKUP_DIR', BASE_DIR / 'backups'))
 # How many recent backups to keep before older ones are deleted automatically.
 BACKUP_RETENTION_COUNT = int(os.environ.get('DJANGO_BACKUP_RETENTION_COUNT', '30'))
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+}
 
 # Production security hardening.
 # These only take effect when DEBUG=False (i.e. DJANGO_DEBUG=false in .env),
