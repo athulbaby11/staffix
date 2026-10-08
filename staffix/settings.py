@@ -56,6 +56,13 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
+# Full origins (with scheme) trusted for CSRF, e.g. "https://staffix.example.com".
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',')
+    if origin.strip()
+]
+
 
 # Application definition
 
@@ -76,6 +83,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -110,7 +118,7 @@ WSGI_APPLICATION = 'staffix.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.environ.get('DJANGO_DB_PATH', BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -153,19 +161,30 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+# Target of `python manage.py collectstatic`; served by WhiteNoise.
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage'},
+}
 
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
-
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+# Console backend by default; set DJANGO_EMAIL_HOST etc. to send real mail.
+EMAIL_BACKEND = os.environ.get(
+    'DJANGO_EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend'
+)
+EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST', 'localhost')
+EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', '25'))
+EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = _env_bool('DJANGO_EMAIL_USE_TLS', default=False)
+DEFAULT_FROM_EMAIL = os.environ.get('DJANGO_DEFAULT_FROM_EMAIL', 'staffixrecruit@gmail.com')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# Uploaded files (CVs, DBS, IDs). Point to persistent storage in production.
+MEDIA_ROOT = Path(os.environ.get('DJANGO_MEDIA_ROOT', BASE_DIR / 'media'))
 
 IMAGE_URL = '/images/'
 IMAGE_ROOT = BASE_DIR / 'images'
@@ -210,6 +229,12 @@ REST_FRAMEWORK = {
 # These only take effect when DEBUG=False (i.e. DJANGO_DEBUG=false in .env),
 # so local development is unaffected.
 if not DEBUG:
+    if 'DJANGO_SECRET_KEY' not in os.environ:
+        raise RuntimeError('DJANGO_SECRET_KEY must be set when DJANGO_DEBUG=false.')
+    if not ALLOWED_HOSTS:
+        raise RuntimeError('DJANGO_ALLOWED_HOSTS must be set when DJANGO_DEBUG=false.')
+    # Trust the reverse proxy (nginx/load balancer) to report HTTPS.
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = _env_bool('DJANGO_SECURE_SSL_REDIRECT', default=True)
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
