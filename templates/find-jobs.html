@@ -11,7 +11,7 @@
 <body>
     <header class="site-header">
         <nav class="navbar container" aria-label="Main navigation">
-            <a class="brand" href="index.html">STAFFIX</a>
+            <a class="brand" href="{% url 'index' %}">STAFFIX</a>
             <div class="nav-links">
                 <a href="find-jobs.html">Find jobs</a>
                 <a href="about-us.html">About us</a>
@@ -89,7 +89,7 @@
     <footer class="site-footer">
         <div class="container footer-content">
             <div>
-                <a class="brand" href="index.html">STAFFIX</a>
+                <a class="brand" href="{% url 'index' %}">STAFFIX</a>
                 <p>Reliable people. Better businesses.</p>
                 <span class="footer-description">Connecting ambitious businesses with dependable people and flexible workforce solutions.</span>
                 <div class="social-links" aria-label="Social media links">
@@ -108,10 +108,10 @@
             </div>
             <div class="footer-links">
                 <strong>Quick links</strong>
-                <a href="index.html#home">Home</a>
-                <a href="index.html#about">About us</a>
+                <a href="{% url 'index' %}#home">Home</a>
+                <a href="{% url 'index' %}#about">About us</a>
                 <a href="find-jobs.html">Find jobs</a>
-                <a href="index.html#contact">Contact</a>
+                <a href="{% url 'index' %}#contact">Contact</a>
             </div>
             <div class="footer-hours">
                 <strong>Office hours</strong>

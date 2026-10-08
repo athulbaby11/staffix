@@ -2,10 +2,15 @@
 {% include "header.html" %}
 
 <main>
-    <section class="jobs-page-intro container">
-        <p class="eyebrow">STAFFIX opportunities</p>
-        <h1>All open<br><span>job vacancies.</span></h1>
-        <p class="hero-text">Every role registered with STAFFIX, all in one place.</p>
+    <section class="jobs-page-intro container" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
+        <div>
+            <p class="eyebrow">STAFFIX opportunities</p>
+            <h1>All open<br><span>job vacancies.</span></h1>
+            <p class="hero-text">Every role registered with STAFFIX, all in one place. Browse the latest openings from trusted businesses, compare roles that match your skills, and apply with confidence. New vacancies are added regularly, so check back often to find your next opportunity.</p>
+        </div>
+        <div style="text-align:center;">
+            <img src="{% static 'image/Staffix logo 1.png' %}" alt="STAFFIX logo" style="max-width:100%;height:auto;">
+        </div>
     </section>
 
     <section class="jobs container all-jobs">

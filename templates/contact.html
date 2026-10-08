@@ -2,10 +2,15 @@
 {% include 'header.html' %}
 
     <main>
-        <section class="jobs-page-intro container">
-            <p class="eyebrow">Let's talk</p>
-            <h1>We are here<br><span>to help.</span></h1>
-            <p class="hero-text">Whether you need reliable staff or are looking for your next opportunity, our team is ready to listen.</p>
+        <section class="jobs-page-intro container" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
+            <div>
+                <p class="eyebrow">Let's talk</p>
+                <h1>We are here<br><span>to help.</span></h1>
+                <p class="hero-text">Whether you need reliable staff or are looking for your next opportunity, our team is ready to listen.</p>
+            </div>
+            <div style="text-align:center;">
+                <img src="{% static 'image/dairy.png' %}" alt="Contact STAFFIX" style="max-width:100%;height:auto;">
+            </div>
         </section>
         <section class="contact contact-page container">
             <div><p class="eyebrow">Get in touch</p><h2>Start a conversation with STAFFIX.</h2><p class="hero-text">Tell us what you need and we will get back to you as soon as possible.</p></div>

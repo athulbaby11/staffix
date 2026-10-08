@@ -1,10 +1,15 @@
 {% load static %}
 {% include 'header.html' %}
     <main>
-        <section class="jobs-page-intro container">
-            <p class="eyebrow">Who we are</p>
-            <h1>People first.<br><span>Business focused.</span></h1>
-            <p class="hero-text">STAFFIX connects businesses with skilled, dependable people through professional and flexible staffing solutions.</p>
+        <section class="jobs-page-intro container" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
+            <div>
+                <p class="eyebrow">Who we are</p>
+                <h1>People first.<br><span>Business focused.</span></h1>
+                <p class="hero-text">STAFFIX connects businesses with skilled, dependable people through professional and flexible staffing solutions.</p>
+            </div>
+            <div style="text-align:center;">
+                <img src="{% static 'image/mockup.png' %}" alt="STAFFIX" style="max-width:100%;height:auto;">
+            </div>
         </section>
         <section class="intro container">
             <p class="eyebrow">About STAFFIX</p>
