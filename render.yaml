@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: staffix
+    runtime: python
+    plan: starter # persistent disks require a paid plan
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    preDeployCommand: python manage.py migrate --noinput
+    startCommand: gunicorn staffix.wsgi:application --bind 0.0.0.0:$PORT --workers 3
+    healthCheckPath: /
+    disk:
+      name: staffix-data
+      mountPath: /var/data
+      sizeGB: 5
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.0
+      - key: DJANGO_DEBUG
+        value: "false"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_ALLOWED_HOSTS
+        sync: false # e.g. staffix.onrender.com
+      - key: DJANGO_CSRF_TRUSTED_ORIGINS
+        sync: false # e.g. https://staffix.onrender.com
+      - key: DJANGO_DB_PATH
+        value: /var/data/db.sqlite3
+      - key: DJANGO_MEDIA_ROOT
+        value: /var/data/media
+      - key: DJANGO_BACKUP_DIR
+        value: /var/data/backups

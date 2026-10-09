@@ -23,3 +23,9 @@ Django 6.1 app (Python 3.13), WSGI entry: `staffix.wsgi:application`.
 - Backups: `python manage.py backup_db` (see `scripts/linux` for systemd timer / cron).
 - Email uses the console backend until `DJANGO_EMAIL_*` is configured.
 - Debug/test scripts in the repo root (`debug_login*.py`, `test_*.py`) are for local use only.
+
+## Render
+1. Push to GitHub, then in Render choose New > Blueprint and select this repo (uses `render.yaml`).
+2. Fill in `DJANGO_ALLOWED_HOSTS` (e.g. `staffix.onrender.com`) and `DJANGO_CSRF_TRUSTED_ORIGINS` (`https://staffix.onrender.com`).
+3. After the first deploy, open the Render Shell and run `STAFFIX_ADMIN_PASSWORD=... python create_admin.py`.
+- SQLite, media and backups live on the persistent disk at `/var/data` (paid plan required).
