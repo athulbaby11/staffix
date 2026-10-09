@@ -34,7 +34,7 @@ main { display: flex; flex-direction: column; }
 .site-header { border-bottom: 1px solid var(--line); background: rgba(246, 247, 242, .9); }
 .navbar, .footer-content { display: flex; align-items: center; justify-content: space-between; min-height: 82px; }
 .brand { color: var(--ink); font-size: 1.25rem; font-weight: 800; letter-spacing: .12em; text-decoration: none; }
-.brand-logo { display: block; width: 320px; height: 92px; object-fit: cover; object-position: center; }
+.brand-logo { display: block; width: auto; height: 170px; margin: -55px 0; object-fit: contain; }
 .brand:hover { color: var(--blue-dark); }
 .nav-links { display: flex; gap: 34px; }
 .nav-links a { color: var(--muted); text-decoration: none; font-size: 1.1rem; }
@@ -341,6 +341,10 @@ h2 { margin-bottom: 20px; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.05
 .employee-document-list li > span i { color: var(--blue-dark); font-size: 1.05rem; }
 .employee-document-list a { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; color: var(--blue-dark); font-size: .82rem; font-weight: 800; text-decoration: none; }
 .employee-document-list a:hover { color: var(--blue); }
+@media (min-width: 761px) {
+    .site-header .navbar { position: relative; }
+    .site-header .nav-links { position: absolute; left: 50%; transform: translateX(-50%); }
+}
 @media print {
     @page { size: A4; margin: 15mm; }
     .site-header, footer, .employee-profile-heading { display: none !important; }
@@ -558,12 +562,18 @@ body {
     position: sticky;
     top: 0;
     z-index: 20;
-    background: rgba(245, 248, 245, .88);
+    background: rgba(245, 248, 245, .76);
     box-shadow: 0 5px 24px rgba(19, 37, 29, .04);
     backdrop-filter: blur(16px);
+    transition: background-color .25s ease, box-shadow .25s ease;
 }
 
-.navbar { min-height: 40px; max-width: 500px; }
+.site-header .navbar { min-height: 76px; padding-top: 25px; padding-bottom: 25px; justify-content: flex-start; transition: min-height .25s ease, padding .25s ease; }
+.site-header .brand { flex: 0 0 auto; margin-right: auto; }
+.site-header .brand-logo { transition: height .25s ease, margin .25s ease; }
+.site-header.is-scrolled { background: rgba(245, 248, 245, .66); box-shadow: 0 5px 20px rgba(19, 37, 29, .1); }
+.site-header.is-scrolled .navbar { min-height: 66px; padding-top: 21px; padding-bottom: 21px; }
+.site-header.is-scrolled .brand-logo { height: 140px; margin: -45px 0; }
 .brand { font-size: 1.35rem; }
 .nav-links a { position: relative; padding: 7px 0; }
 .nav-links a::after {

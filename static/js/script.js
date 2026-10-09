@@ -2,6 +2,16 @@ const viewMoreJobsButton = document.querySelector("#view-more-jobs");
 const extraJobs = document.querySelectorAll(".extra-job");
 const menuToggle = document.querySelector(".menu-toggle");
 const navigationLinks = document.querySelector(".nav-links");
+const siteHeader = document.querySelector(".site-header");
+
+if (siteHeader) {
+    const updateHeaderOnScroll = () => {
+        siteHeader.classList.toggle("is-scrolled", window.scrollY > 30);
+    };
+
+    updateHeaderOnScroll();
+    window.addEventListener("scroll", updateHeaderOnScroll, { passive: true });
+}
 
 if (viewMoreJobsButton) {
     viewMoreJobsButton.addEventListener("click", () => {
