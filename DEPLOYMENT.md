@@ -28,4 +28,5 @@ Django 6.1 app (Python 3.13), WSGI entry: `staffix.wsgi:application`.
 1. Push to GitHub, then in Render choose New > Blueprint and select this repo (uses `render.yaml`).
 2. Fill in `DJANGO_ALLOWED_HOSTS` (e.g. `staffix.onrender.com`) and `DJANGO_CSRF_TRUSTED_ORIGINS` (`https://staffix.onrender.com`).
 3. After the first deploy, open the Render Shell and run `STAFFIX_ADMIN_PASSWORD=... python create_admin.py`.
-- SQLite, media and backups live on the persistent disk at `/var/data` (paid plan required).
+- Free plan, no persistent disk: the SQLite DB and uploaded media are wiped on every deploy/restart
+  (and the service sleeps after idle), so the admin user must be recreated. Demo/testing only.
