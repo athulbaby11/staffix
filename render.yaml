@@ -4,7 +4,7 @@ services:
     runtime: python
     plan: free # no persistent disk: SQLite and uploads reset on every deploy/restart
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
-    startCommand: python manage.py migrate --noinput && gunicorn staffix.wsgi:application --bind 0.0.0.0:$PORT --workers 2
+    startCommand: python manage.py migrate --noinput && (if [ -n "$STAFFIX_ADMIN_PASSWORD" ]; then python create_admin.py; fi) && gunicorn staffix.wsgi:application --bind 0.0.0.0:$PORT --workers 2
     healthCheckPath: /
     envVars:
       - key: PYTHON_VERSION
@@ -13,7 +13,8 @@ services:
         value: "false"
       - key: DJANGO_SECRET_KEY
         generateValue: true
-      - key: DJANGO_ALLOWED_HOSTS
-        sync: false # e.g. staffix.onrender.com
-      - key: DJANGO_CSRF_TRUSTED_ORIGINS
-        sync: false # e.g. https://staffix.onrender.com
+      # Host and CSRF origin are derived from RENDER_EXTERNAL_HOSTNAME automatically.
+      - key: STAFFIX_ADMIN_EMAIL
+        sync: false
+      - key: STAFFIX_ADMIN_PASSWORD
+        sync: false # admin is (re)created on every start since the DB is ephemeral
